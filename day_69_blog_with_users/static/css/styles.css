@@ -10853,3 +10853,19 @@ header.masthead .post-heading .meta a {
   color: #ee6f57;
   text-align: center;
 }
+
+.flash-message {
+  position: absolute;
+  top: 70px; /* Adjust according to your navbar height */
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 90%; /* Prevent overflow on smaller screens */
+  z-index: 1000; /* Ensure it stays above other content */
+  margin: 0;
+  padding: 0;
+
+}
+.flash-message.show {
+  display: block;
+  margin: 0;
+}
