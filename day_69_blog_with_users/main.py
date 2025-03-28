@@ -7,29 +7,31 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship, DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String, Text
 from functools import wraps
+from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm
 from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
 import hashlib
 
-# Import your forms from the forms.py
-from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm
-
-
+# Initialize Flask application
 app = Flask(__name__)
 secret_key = secrets.token_hex(16)
 app.config["SECRET_KEY"] = secret_key
 ckeditor = CKEditor(app)
-Bootstrap5(app)
+bootstrap = Bootstrap5(app)
 
 
-def get_gravatar_url(email, size=100, default="retro", rating="g"):
-    url = "https://www.gravatar.com/avatar/"
-    hash_value = hashlib.md5(email.lower().encode("utf-8")).hexdigest()
-    url += hash_value + f"?s={size}&d={default}&r={rating}"
-    return url
+# CREATE DATABASE
+class Base(DeclarativeBase):
+    pass
 
 
-# Initialize LoginManager
+# Configure SQLAlchemy database
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///blog.db"
+db = SQLAlchemy(model_class=Base)
+db.init_app(app)
+
+
+# Configure Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
@@ -38,46 +40,25 @@ login_manager.login_view = "login"
 # User loader callback
 @login_manager.user_loader
 def load_user(user_id):
+    """User loader callback for Flask-Login."""
     return User.query.get(int(user_id))
 
 
-def admin_only(func):
-    @wraps(func)
-    def wrapper_function(*args, **kwargs):
-        # If user is not logged in or is not admin (id != 1), abort with 403
-        if not current_user.is_authenticated or current_user.id != 1:
-            abort(403)
-        # Otherwise, continue with the route function
-        return func(*args, **kwargs)
-
-    return wrapper_function
+# --- Database Models ---
 
 
-# CREATE DATABASE
-class Base(DeclarativeBase):
-    pass
-
-
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///blog.db"
-db = SQLAlchemy(model_class=Base)
-db.init_app(app)
-
-
-# CONFIGURE TABLES
-
-
+# Create User class
 class User(UserMixin, db.Model):
     __tablename__ = "users"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(250), nullable=False)
     email: Mapped[str] = mapped_column(String(250), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(250), nullable=False)
-    # This will act like a List of BlogPost objects attached to each User.
-    # The "author" refers to the author property in the BlogPost class.
     posts: Mapped[list["BlogPost"]] = relationship(back_populates="author")
     comments: Mapped[list["Comment"]] = relationship(back_populates="comment_author")
 
 
+# Create BlogPost class
 class BlogPost(db.Model):
     __tablename__ = "blog_posts"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -86,12 +67,12 @@ class BlogPost(db.Model):
     date: Mapped[str] = mapped_column(String(250), nullable=False)
     body: Mapped[str] = mapped_column(Text, nullable=False)
     img_url: Mapped[str] = mapped_column(String(250), nullable=False)
-    # Create Foreign Key, "users.id" the users refers to the tablename of User.
     author_id: Mapped[int] = mapped_column(Integer, db.ForeignKey("users.id"))
     author: Mapped["User"] = relationship(back_populates="posts")
     comments: Mapped[list["Comment"]] = relationship(back_populates="parent_post")
 
 
+# Create Comment class
 class Comment(db.Model):
     __tablename__ = "comments"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -102,20 +83,46 @@ class Comment(db.Model):
     text: Mapped[str] = mapped_column(Text, nullable=False)
 
 
-# Create the database and tables (run only once within app context)
-def create_database():
-    with app.app_context():
-        db.create_all()
+# --- Decorators and Utility Functions ---
 
 
-create_database()
+# Decorator to restrict access to admin users only
+def admin_only(func):
+    @wraps(func)
+    def wrapper_function(*args, **kwargs):
+        # Checks if the current user is authenticated and has an ID of 1 (assuming admin ID is 1)
+        if not current_user.is_authenticated or current_user.id != 1:
+            abort(403)
+        return func(*args, **kwargs)
+
+    return wrapper_function
 
 
+# Function to generate Gravatar URL based on email
+def get_gravatar_url(email, size=100, default="retro", rating="g"):
+    url = "https://www.gravatar.com/avatar/"
+    hash_value = hashlib.md5(email.lower().encode("utf-8")).hexdigest()
+    url += hash_value + f"?s={size}&d={default}&r={rating}"
+    return url
+
+
+# Helper function to flash messages with optional links
 def flash_message(category, message, link_text=None, link_url=None):
     """Utility function to flash messages with optional links."""
     if link_text and link_url:
         message += f' <a href="{link_url}" class="alert-link" style="color: #007bff; text-decoration: underline;">{link_text}</a>'
     flash(message, category)
+
+
+# --- Routes ---
+
+
+@app.route("/")
+def get_all_posts():
+    # Retrieve all blog posts from the database
+    result = db.session.execute(db.select(BlogPost))
+    posts = result.scalars().all()
+    return render_template("index.html", all_posts=posts)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -185,16 +192,10 @@ def login():
 
 @app.route("/logout")
 def logout():
+    # Log out the current user
     logout_user()
     flash_message("success", "Logged out successfully!")
     return redirect(url_for("get_all_posts"))
-
-
-@app.route("/")
-def get_all_posts():
-    result = db.session.execute(db.select(BlogPost))
-    posts = result.scalars().all()
-    return render_template("index.html", all_posts=posts)
 
 
 @app.route("/post/<int:post_id>", methods=["GET", "POST"])

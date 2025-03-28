@@ -10862,10 +10862,9 @@ header.masthead .post-heading .meta a {
   max-width: 90%; /* Prevent overflow on smaller screens */
   z-index: 1000; /* Ensure it stays above other content */
   margin: 0;
-  padding: 0;
+  padding: 10px;
 
 }
 .flash-message.show {
   display: block;
-  margin: 0;
 }
