@@ -1,4 +1,4 @@
-# # Day_016_OOP_Coffee_Machine
+# Day_016_OOP_Coffee_Machine
 
 This project is part of my 100 Days of Code journey.
 

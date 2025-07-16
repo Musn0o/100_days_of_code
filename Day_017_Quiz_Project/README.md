@@ -1,4 +1,4 @@
-# # Day_017_Quiz_Project
+# Day_017_Quiz_Project
 
 This project is part of my 100 Days of Code journey.
 
