@@ -89,7 +89,6 @@ Each folder represents a day:
 - [Day 067: Blog Capstone Project Part3](./Day_067_Blog_Capstone_Project_Part3)
 - [Day 068: Authentication With Flask](./Day_068_Authentication_With_Flask)
 - [Day 069: Blog Capstone Project Part4](./Day_069_Blog_Capstone_Project_Part4)
-- [Day 69: Blog With Users](./day_69_blog_with_users)
 
 
 ---
