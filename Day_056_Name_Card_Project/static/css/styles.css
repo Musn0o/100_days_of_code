@@ -1,0 +1,85 @@
+/* static/css/styles.css */
+body {
+    font-family: 'Montserrat', sans-serif; /* Primary font */
+    background-color: #f0f2f5; /* Light grey background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Full viewport height */
+    margin: 0;
+    color: #333; /* Dark grey text */
+}
+
+.container {
+    background-color: #ffffff; /* White card background */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    padding: 30px;
+    text-align: center;
+    max-width: 400px; /* Max width for the card */
+    width: 90%; /* Responsive width */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.profile-pic {
+    width: 150px; /* Size of the profile picture */
+    height: 150px;
+    border-radius: 50%; /* Circular shape */
+    object-fit: cover; /* Ensure image covers the area */
+    border: 4px solid #4CAF50; /* Green border */
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-family: 'Merriweather', serif; /* Heading font */
+    color: #2c3e50; /* Dark blue-grey for heading */
+    margin-bottom: 10px;
+    font-size: 2.2em; /* Larger font size */
+}
+
+.title {
+    color: #555; /* Medium grey */
+    font-size: 1.1em;
+    margin-bottom: 15px;
+}
+
+.description {
+    font-family: 'Merriweather', serif;
+    font-size: 0.95em;
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.social-links a {
+    display: inline-block;
+    background-color: #007bff; /* Blue for links */
+    color: white;
+    padding: 10px 20px;
+    margin: 0 10px 10px 10px;
+    border-radius: 8px; /* Rounded buttons */
+    text-decoration: none; /* No underline */
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+}
+
+.social-links a:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: translateY(-3px); /* Slight lift effect */
+}
+
+/* Specific colors for social links (optional) */
+.social-links a[href*="github.com"] { background-color: #333; }
+.social-links a[href*="github.com"]:hover { background-color: #000; }
+.social-links a[href*="linkedin.com"] { background-color: #0077B5; }
+.social-links a[href*="linkedin.com"]:hover { background-color: #005582; }
+.social-links a[href*="twitter.com"] { background-color: #1DA1F2; }
+.social-links a[href*="twitter.com"]:hover { background-color: #0d8ddb; }
+
+
+.footer {
+    margin-top: 30px;
+    font-size: 0.8em;
+    color: #888;
+}
+

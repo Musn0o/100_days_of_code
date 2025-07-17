@@ -1,0 +1,43 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musn0o's Name Card</title>
+    <!-- Link to the external CSS stylesheet -->
+    <!-- url_for('static', filename='...') is used to correctly link static files in Flask -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- Google Fonts - Montserrat and Merriweather -->
+    <link href="[https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Merriweather:wght@400;700&display=swap](https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Merriweather:wght@400;700&display=swap)" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Profile Picture -->
+        <img class="profile-pic" src="{{ url_for('static', filename='images/profile_pic.jpg') }}" alt="Profile Picture">
+        
+        <!-- Name -->
+        <h1>Musn0o</h1>
+        
+        <!-- Title/Description -->
+        <p class="title">A Python Developer in Training</p>
+        <p class="description">
+            Passionate about coding and learning new technologies.
+            Currently on my 100 Days of Code journey, building exciting projects!
+        </p>
+        
+        <!-- Social Media Links -->
+        <div class="social-links">
+            <a href="https://github.com/Musn0o" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/mustafa-askar-223551351" target="_blank">LinkedIn</a>
+            <a href="https://huggingface.co/Musno" target="_blank">🤗 Hugging Face</a>
+            <a href="https://www.kaggle.com/mustafaaskar95" target="_blank">Kaggle</a>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; 2025 Musn0o. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
