@@ -70,3 +70,23 @@
 **30- touch .gitignore**: Create a new file named ".gitignore".
 
 **31- nano .gitignore**: Open the ".gitignore" file in a text editor and add the name of the files you want to avoid uploading to the remote repository.
+
+## Cloning, branching, and merging.
+
+**32- git clone https://github.com/yourusername/your-repo.git**: Clone the remote repository to your local machine.
+
+**33- git branch new-branch**: Create a new branch named "new-branch".
+
+**34- git checkout new-branch**: Switch to the "new-branch" branch.
+
+**35- git merge main**: Merge the "main" branch into the "new-branch".
+
+**36- git push origin new-branch**: Push the changes to the remote repository.
+
+---
+
+## Explaining Forking and Pulling.
+
+**37- git fork https://github.com/yourusername/your-repo.git**: Fork the remote repository to your own GitHub account this is important because you can make changes to the repository without affecting the original repository.
+
+**38- git pull origin main**: Pull the changes from the remote repository to your local machine.
